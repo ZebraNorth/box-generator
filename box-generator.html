@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<!--
+
+		https://twitter.com/ZebraNorth
+
+		MIT License
+
+		Copyright (c) 2020 Zebra North
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the "Software"), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+
+		The above copyright notice and this permission notice shall be included in all
+		copies or substantial portions of the Software.
+
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+
+	-->
+	<head>
+		<title>Zebra North's Box Generator</title>
+		<style type="text/css">
+		.form
+		{
+			margin-bottom: 20px;
+		}
+
+		#svg
+		{
+			border: 1px solid #ccc;
+		}
+
+		@media print
+		{
+			#svg
+			{
+				border: none;
+			}
+
+			.form
+			{
+				display: none;
+			}
+		}
+		</style>
+		<script type="text/javascript">
+
+			function update()
+			{
+				var a = document.getElementById('a');
+				var b = document.getElementById('b');
+				var c = document.getElementById('c');
+
+				var width = parseFloat(document.getElementById('width').value);
+				var height = parseFloat(document.getElementById('height').value);
+				var depth = parseFloat(document.getElementById('depth').value);
+
+				if (isNaN(width) || isNaN(height) || isNaN(depth))
+					return;
+
+				a.setAttribute('width', width + 'mm');
+				a.setAttribute('height', (height * 2.2 + depth * 2) + 'mm');
+				a.setAttribute('x', depth + 'mm');
+				a.setAttribute('y', 0);
+
+				b.setAttribute('width', width + 'mm');
+				b.setAttribute('height', (height + depth * 2) + 'mm');
+				b.setAttribute('x', depth + 'mm');
+				b.setAttribute('y', height * 0.6 + 'mm');
+
+				c.setAttribute('width', (width + depth * 2) + 'mm');
+				c.setAttribute('height', height + 'mm');
+				c.setAttribute('x', 0);
+				c.setAttribute('y', (height * 0.6 + depth) + 'mm');
+			}
+
+			function onLoad()
+			{
+				for (var event of ['change', 'keyup', 'keydown'])
+				{
+					document.getElementById('width').addEventListener(event, update);
+					document.getElementById('height').addEventListener(event, update);
+					document.getElementById('depth').addEventListener(event, update);
+				}
+
+				update();
+			}
+
+			document.addEventListener('DOMContentLoaded', onLoad);
+
+		</script>
+	</head>
+	<body>
+		<div class="form">
+			<form>
+				<label>Width <input id="width" type="number" value="100"></label>
+				<label>Height <input id="height" type="number" value="50"></label>
+				<label>Depth <input id="depth" type="number" value="20"></label>
+			</form>
+		</div>
+		<svg id="svg" width="210mm" height="297mm">
+			<rect id="a" stroke="black" fill="transparent" />
+			<rect id="b" stroke="black" fill="transparent" />
+			<rect id="c" stroke="black" fill="transparent" />
+		</svg>
+	</body>
+</html>
